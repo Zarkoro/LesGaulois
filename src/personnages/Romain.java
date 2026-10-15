@@ -1,8 +1,12 @@
 package personnages;
 
+import objets.Equipement;
+
 public class Romain {
 	private String nom;
 	private int force;
+	private Equipement[] equipements = new Equipement[2];
+	private int nbEquipement = 0;
 
 	public Romain(String nom, int force) {
 		this.nom = nom;
@@ -46,7 +50,33 @@ public class Romain {
 		return 0 <= force;
 	}
 
+	private void sEquiper(Equipement equipement) {
+		String texte;
+
+		switch (nbEquipement) {
+		case 2 -> texte = "Le soldat " + nom + " est déjà bien protégé !";
+
+		case 0, 1 -> {
+			if (equipement == equipements[0]) {
+				texte = "Le soldat " + nom + " possède déjà un.e " + equipement + " !";
+			} else {
+				texte = "Le soldat " + nom + " s'équipe avec un.e " + equipement + ".";
+				equipements[nbEquipement] = equipement;
+				nbEquipement++;
+			}
+		}
+
+		default -> throw new IllegalArgumentException("Unexpected value: " + nbEquipement);
+		}
+
+		System.out.println(texte);
+	}
+
 	public static void main() {
-		new Romain("Minus", 6);
+		Romain minus = new Romain("Minus", 6);
+		minus.sEquiper(Equipement.CASQUE);
+		minus.sEquiper(Equipement.CASQUE);
+		minus.sEquiper(Equipement.BOUCLIER);
+		minus.sEquiper(Equipement.CASQUE);
 	}
 }
